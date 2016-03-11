@@ -1,0 +1,15 @@
+{
+  "options": {
+    "specNameSuffix": "spec.js",
+    "stopOnFailure": false,
+    "reporters": {
+      "console": {
+        "verbosity": 3
+      }
+    }
+  },
+
+  "test": {
+    "specs": ["<%=  paths.src.spec %> "]
+  }
+}
