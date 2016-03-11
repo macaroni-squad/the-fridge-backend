@@ -10,11 +10,11 @@ const userSchema = new mongoose.Schema({
     unique: true,
     required: true,
   },
-  username: {
-    type: String,
-    unique: true,
-    required: true,
-  },
+  // username: { // Future development goal
+  //   type: String,
+  //   unique: true,
+  //   required: true,
+  // },
   token: {
     type: String,
     require: true,
