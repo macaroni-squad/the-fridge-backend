@@ -6,6 +6,7 @@
     "start": "./bin/express server"
   },
   "dependencies": {
+    "aws-sdk": "^2.2.43",
     "bcrypt": "^0.8.5",
     "body-parser": "~1.13.2",
     "cors": "^2.7.1",
