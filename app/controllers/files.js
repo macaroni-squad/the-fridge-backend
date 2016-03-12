@@ -25,6 +25,9 @@ const show = (req, res, next) => {
 const create = (req, res, next) => {
   let file = Object.assign(req.body.file, { // do we need something different for images?
     _owner: req.currentUser._id,
+    fileType: req.body.fileType, // added to set the fileType, location, desc on creation
+    location: req.body.location,
+    description: req.body.description
   });
   File.create(file)
     .then(file => res.json({ file }))
