@@ -7,7 +7,7 @@ const File = models.file;
 const authenticate = require('./concerns/authenticate');
 
 // multer for uploading
-const multer = require('multer');
+const multer = require('./concerns/multer');
 const upload = multer({ storage: multer.memoryStorage() });
 
 const index = (req, res, next) => {
@@ -68,5 +68,6 @@ module.exports = controller({
   destroy,
 }, { before: [
   { method: authenticate, except: ['index', 'show'] },
-  { method: upload.single('file[file]'), only: ['create'] }
+  { method: upload.single('file[file]'), only: ['create'], },
+  { method: multer.single(), except: ['index', 'show', 'destroy'], }
 ], });
