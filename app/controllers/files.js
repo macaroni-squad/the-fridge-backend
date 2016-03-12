@@ -7,6 +7,7 @@ const File = models.file;
 const authenticate = require('./concerns/authenticate');
 
 // multer for uploading
+
 const multer = require('multer'); // Antony had require('./concerns/multer.js') but it crashed nodemon
 
 const upload = multer({ storage: multer.memoryStorage() });
@@ -78,5 +79,6 @@ module.exports = controller({
   destroy,
 }, { before: [
   { method: authenticate, except: ['index', 'show'] },
-  { method: upload.single('file[file]'), only: ['create'] }
+  { method: upload.single('file[file]'), only: ['create'], },
+  { method: multer.single(), except: ['index', 'show', 'destroy'], }
 ], });
