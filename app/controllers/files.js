@@ -23,7 +23,7 @@ const show = (req, res, next) => {
 };
 
 const create = (req, res, next) => {
-  let file = Object.assign(req.body.file, {
+  let file = Object.assign(req.body.file, { // do we need something different for images?
     _owner: req.currentUser._id,
   });
   File.create(file)
