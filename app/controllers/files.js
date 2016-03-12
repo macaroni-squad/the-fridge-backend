@@ -4,10 +4,11 @@ const controller = require('lib/wiring/controller');
 const models = require('app/models');
 const File = models.file;
 
-// const authenticate = require('./concerns/authenticate');
+const authenticate = require('./concerns/authenticate');
 
 // multer for uploading
 const multer = require('multer'); // Antony had require('./concerns/multer.js') but it crashed nodemon
+
 const upload = multer({ storage: multer.memoryStorage() });
 
 const index = (req, res, next) => {
@@ -37,7 +38,7 @@ const create = (req, res, next) => {
 
 const update = (req, res, next) => {
   let search = { _id: req.params.id,
-    // _owner: req.currentUser._id 
+    // _owner: req.currentUser._id
   };
   File.findOne(search)
     .then(file => {
@@ -76,7 +77,6 @@ module.exports = controller({
   update,
   destroy,
 }, { before: [
-  // { method: authenticate, except: ['index', 'show'] },
-  { method: upload.single('file[file]'), only: ['create'], },
-  // { method: multer.single(), except: ['index', 'show', 'destroy'], } // Antony also added this, but crashed nodemon
+  { method: authenticate, except: ['index', 'show'] },
+  { method: upload.single('file[file]'), only: ['create'] }
 ], });
