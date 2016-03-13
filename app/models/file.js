@@ -3,9 +3,13 @@
 const mongoose = require('mongoose');
 
 const fileSchema = new mongoose.Schema({
-  fileType: {
+  title: {
     type: String,
     required: true
+  },
+  fileType: {
+    type: String,
+    // required: true
   },
   location: {
     type: String,

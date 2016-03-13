@@ -4,7 +4,7 @@ const controller = require('lib/wiring/controller');
 const models = require('app/models');
 const File = models.file;
 
-const authenticate = require('./concerns/authenticate');
+// const authenticate = require('./concerns/authenticate');
 
 // multer for uploading
 const multer = require('multer'); // Antony had require('./concerns/multer.js') but it crashed nodemon
@@ -24,14 +24,14 @@ const show = (req, res, next) => {
 
 const create = (req, res, next) => {
   let file = Object.assign(req.body.file, { // do we need something different for images?
-    _owner: req.currentUser._id,
-    fileType: req.body.fileType, // added to set the fileType, location, desc on creation
-    location: req.body.location,
-    description: req.body.description
+    _owner: "56e3284d2715bf055a0c6f8e",
+    // fileType: req.body.fileType, // added to set the fileType, location, desc on creation
   });
   File.create(file)
     .then(file => res.json({ file }))
     .catch(err => next(err));
+  // res.json({ body: req.body, file: req.file });
+
 };
 
 const update = (req, res, next) => {
@@ -50,7 +50,9 @@ const update = (req, res, next) => {
 };
 
 const destroy = (req, res, next) => {
-  let search = { _id: req.params.id, _owner: req.currentUser._id };
+  let search = {
+    _id: req.params.id,
+    _owner: req.currentUser._id };
   File.findOne(search)
     .then(file => {
       if (!file) {
@@ -70,7 +72,7 @@ module.exports = controller({
   update,
   destroy,
 }, { before: [
-  { method: authenticate, except: ['index', 'show'] },
+  // { method: authenticate, except: ['index', 'show'] },
   { method: upload.single('file[file]'), only: ['create'], },
   // { method: multer.single(), except: ['index', 'show', 'destroy'], } // Antony also added this, but crashed nodemon
 ], });
