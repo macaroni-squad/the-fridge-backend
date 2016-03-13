@@ -116,5 +116,5 @@ module.exports = controller({
   changepw,
 }, { before: [
   { method: authenticate, except: ['signup', 'signin'] },
-  { method: multer.single(), except: ['index', 'show', 'signout'], }
+  { method: multer.single(), except: ['index', 'show', 'signout'], },
 ], });
