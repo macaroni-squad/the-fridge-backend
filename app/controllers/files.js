@@ -23,8 +23,9 @@ const show = (req, res, next) => {
 };
 
 const create = (req, res, next) => {
+  console.log(req);
   let file = Object.assign(req.body.file, { // do we need something different for images?
-    _owner: "56e3284d2715bf055a0c6f8e",
+    // _owner: "56e5f15e9eccc7e514e5216e",
     // fileType: req.body.fileType, // added to set the fileType, location, desc on creation
   });
   File.create(file)
@@ -35,7 +36,9 @@ const create = (req, res, next) => {
 };
 
 const update = (req, res, next) => {
-  let search = { _id: req.params.id, _owner: req.currentUser._id };
+  let search = { _id: req.params.id,
+    // _owner: req.currentUser._id 
+  };
   File.findOne(search)
     .then(file => {
       if (!file) {
@@ -52,7 +55,8 @@ const update = (req, res, next) => {
 const destroy = (req, res, next) => {
   let search = {
     _id: req.params.id,
-    _owner: req.currentUser._id };
+    // _owner: req.currentUser._id
+  };
   File.findOne(search)
     .then(file => {
       if (!file) {
