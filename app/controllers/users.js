@@ -9,6 +9,7 @@ const User = models.user;
 const crypto = require('crypto');
 
 const authenticate = require('./concerns/authenticate');
+const multer = require('./concerns/multer.js');
 
 const getToken = () =>
   new Promise((resolve, reject) =>
@@ -112,4 +113,5 @@ module.exports = controller({
   changepw,
 }, { before: [
   { method: authenticate, except: ['signup', 'signin'] },
+  { method: multer.single(), except: ['index', 'show', 'signout'], },
 ], });
