@@ -24,19 +24,14 @@ const show = (req, res, next) => {
 };
 
 const create = (req, res, next) => {
-  let file = Object.assign(req.body.file, { // do we need something different for images?
-    //
+  let file = Object.assign(req.body.file, { 
     title: req.body.file.title,
     description: req.body.file.description,
     filename: req.file.originalname,
-    // filename: "test",
-    // fileType: req.body.fileType, // added to set the fileType, location, desc on creation
   });
-  console.log(file);
 awsS3Upload(file.filename, file.title, file.description)
     .then(file => res.json({ file }))
     .catch(err => next(err));
-  // res.json({ body: req.body, file: req.file });
 
 };
 
