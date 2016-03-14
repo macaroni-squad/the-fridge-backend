@@ -24,4 +24,5 @@ let awsS3Upload = function(fileToUpload){
   }).catch(console.error);
 };
 
+
 module.exports = awsS3Upload;
