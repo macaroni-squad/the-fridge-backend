@@ -2,11 +2,12 @@
 
 # this script works
 
-curl --include --request PATCH http://localhost:3000/files/56e5f78f2b96d59c5607bc48 \
-  --header "Authorization: Token token=sNS+7j1qEtebMUH/CvxJtA==" \
+curl --include --request PATCH http://localhost:3000/files/56e5f4f1d19fd51d166e431a \
+  --header "Authorization: Token token=heW0X8I5hhkBas7ziBOalA==" \
   --header "Content-Type: application/json" \
---data '{
-    "file": {
-      "description": "Pusheen is NOT in the fridge"
-    }
+  --data '{
+      "file": {
+        "title": "The title has been edited",
+        "description": "This file has been edited"
+      }
   }'
