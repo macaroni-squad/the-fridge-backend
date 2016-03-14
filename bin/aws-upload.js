@@ -4,7 +4,7 @@ require('dotenv').load();
 
 const fs = require('fs');
 const fileType = require('file-type');
-const mongoose = require('../app/middleware/mongoose.js');
+// const mongoose = require('../app/middleware/mongoose.js');
 const awsUpload = require('../lib/aws-upload');
 const File = require('../app/models/file.js');
 
@@ -28,8 +28,7 @@ let awsS3Upload = function(filename, title, description){
   }).then((file) => { // model instance created and saved
     console.log('Success!');
     console.log(file);
-  }).catch(console.error)
-  .then(() => mongoose.connection.close());
+  }).catch(console.error);
 };
 
 module.exports = awsS3Upload;

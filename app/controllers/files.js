@@ -5,7 +5,7 @@ const models = require('app/models');
 const File = models.file;
 const awsS3Upload = require('../../bin/aws-upload');
 
-const authenticate = require('./concerns/authenticate');
+// const authenticate = require('./concerns/authenticate');
 
 // multer for uploading
 const multer = require('multer'); // Antony had require('./concerns/multer.js') but it crashed nodemon
@@ -29,11 +29,11 @@ const create = (req, res, next) => {
     description: req.body.file.description,
     filename: req.file.originalname,
   });
-awsS3Upload(file.filename, file.title, file.description)
+  awsS3Upload(file.filename, file.title, file.description)
     .then(file => res.json({ file }))
     .catch(err => next(err));
 
-  return res.json({ body: req.body, file: req.file });
+  // return res.json({ body: req.body, file: req.file });
 };
 
 const update = (req, res, next) => {
@@ -77,7 +77,7 @@ module.exports = controller({
   update,
   destroy,
 }, { before: [
-  { method: authenticate, except: ['index', 'show'] },
+  // { method: authenticate, except: ['index', 'show'] },
   { method: upload.single('file[file]'), only: ['create'], },
-  { method: multer.single(), except: ['index', 'show', 'destroy'], }
+  // { method: multer.single(), except: ['index', 'show', 'destroy'], }
 ], });
