@@ -42,7 +42,9 @@ const create = (req, res, next) => {
 
 // REQUIRE AUTENTICATION
 const update = (req, res, next) => {
-  let search = { _id: req.params.id, _owner: req.currentUser._id };
+  let search = { _id: req.params.id,
+    // _owner: req.currentUser._id
+  };
   File.findOne(search)
     .then(file => {
       if (!file) {
