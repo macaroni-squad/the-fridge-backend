@@ -11,7 +11,7 @@ const File = require('../app/models/file.js');
 
 let awsS3Upload = function(filename, title, description){
   console.log(filename, title, description);
-  new Promise((resolve, reject) =>
+  return new Promise((resolve, reject) =>
     fs.readFile(filename, (err, data) =>
       err ? reject(err) : resolve(data)
     )
@@ -27,7 +27,7 @@ let awsS3Upload = function(filename, title, description){
   .then((awsS3Response) => {
     console.log("awsS3Response called");
     console.log(awsS3Response);
-    return File.create({ location: awsS3Response.Location, title, description });
+    return File.create({ location: awsS3Response.Location, title: title, description: description });
   }).then((file) => { // model instance created and saved
     console.log('Success!');
     console.log(file);

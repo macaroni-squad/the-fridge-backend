@@ -33,8 +33,7 @@ const create = (req, res, next) => {
     // fileType: req.body.fileType, // added to set the fileType, location, desc on creation
   });
   console.log(file);
-  File.create(file)
-    .then(awsS3Upload(file.filename, file.title, file.description))
+awsS3Upload(file.filename, file.title, file.description)
     .then(file => res.json({ file }))
     .catch(err => next(err));
   // res.json({ body: req.body, file: req.file });
