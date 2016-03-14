@@ -3,6 +3,7 @@
 const controller = require('lib/wiring/controller');
 const models = require('app/models');
 const File = models.file;
+const awsS3Upload = require('../../bin/aws-upload');
 
 // const authenticate = require('./concerns/authenticate');
 
@@ -24,10 +25,16 @@ const show = (req, res, next) => {
 
 const create = (req, res, next) => {
   let file = Object.assign(req.body.file, { // do we need something different for images?
-    _owner: "56e3284d2715bf055a0c6f8e",
+    //
+    title: req.body.file.title,
+    description: req.body.file.description,
+    filename: req.file.originalname,
+    // filename: "test",
     // fileType: req.body.fileType, // added to set the fileType, location, desc on creation
   });
+  console.log(file);
   File.create(file)
+    .then(awsS3Upload(file.filename, file.title, file.description))
     .then(file => res.json({ file }))
     .catch(err => next(err));
   // res.json({ body: req.body, file: req.file });
