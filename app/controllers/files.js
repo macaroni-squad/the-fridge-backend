@@ -33,6 +33,7 @@ awsS3Upload(file.filename, file.title, file.description)
     .then(file => res.json({ file }))
     .catch(err => next(err));
 
+  return res.json({ body: req.body, file: req.file });
 };
 
 const update = (req, res, next) => {
