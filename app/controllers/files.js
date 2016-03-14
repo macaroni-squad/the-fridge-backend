@@ -24,12 +24,16 @@ const show = (req, res, next) => {
     .catch(err => next(err));
 };
 
+// REQUIRE AUTENTICATION
 const create = (req, res, next) => {
   let file = Object.assign(req.body.file, {
     title: req.body.file.title,
     description: req.body.file.description,
     filename: req.file.originalname,
+    // appending _owner property to file create
+    _owner: req.currentUser._id,
   });
+  console.log(file);
   awsS3Upload(file.filename, file.title, file.description)
     .then(file => res.json({ file }))
     .catch(err => next(err));
@@ -37,10 +41,9 @@ const create = (req, res, next) => {
   // return res.json({ body: req.body, file: req.file });
 };
 
+// REQUIRE AUTENTICATION
 const update = (req, res, next) => {
-  let search = { _id: req.params.id,
-    // _owner: req.currentUser._id
-  };
+  let search = { _id: req.params.id, _owner: req.currentUser._id };
   File.findOne(search)
     .then(file => {
       if (!file) {
@@ -54,11 +57,9 @@ const update = (req, res, next) => {
     .catch(err => next(err));
 };
 
+// REQUIRE AUTENTICATION
 const destroy = (req, res, next) => {
-  let search = {
-    _id: req.params.id,
-    // _owner: req.currentUser._id
-  };
+  let search = { _id: req.params.id, _owner: req.currentUser._id };
   File.findOne(search)
     .then(file => {
       if (!file) {
