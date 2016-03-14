@@ -24,7 +24,7 @@ const show = (req, res, next) => {
 };
 
 const create = (req, res, next) => {
-  let file = Object.assign(req.body.file, { 
+  let file = Object.assign(req.body.file, {
     title: req.body.file.title,
     description: req.body.file.description,
     filename: req.file.originalname,
@@ -36,7 +36,9 @@ awsS3Upload(file.filename, file.title, file.description)
 };
 
 const update = (req, res, next) => {
-  let search = { _id: req.params.id, _owner: req.currentUser._id };
+  let search = { _id: req.params.id,
+    // _owner: req.currentUser._id
+  };
   File.findOne(search)
     .then(file => {
       if (!file) {
@@ -53,7 +55,8 @@ const update = (req, res, next) => {
 const destroy = (req, res, next) => {
   let search = {
     _id: req.params.id,
-    _owner: req.currentUser._id };
+    // _owner: req.currentUser._id
+  };
   File.findOne(search)
     .then(file => {
       if (!file) {
