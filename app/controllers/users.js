@@ -11,6 +11,8 @@ const crypto = require('crypto');
 const authenticate = require('./concerns/authenticate');
 const multer = require('./concerns/multer.js');
 
+const HttpError = require('lib/wiring/http-error');
+
 const getToken = () =>
   new Promise((resolve, reject) =>
     crypto.randomBytes(16, (err, data) =>
@@ -54,9 +56,10 @@ const signin = (req, res, next) => {
   let credentials = req.body.credentials;
   let search = { email: credentials.email };
   User.findOne(search
-  ).then(user =>
-    user.comparePassword(credentials.password)
-  ).then(user =>
+  ).then(user => {
+    return (user ? user.comparePassword(credentials.password) :
+          Promise.reject(new HttpError(404)));
+  }).then(user =>
     getToken().then(token => {
       user.token = token;
       return user.save();

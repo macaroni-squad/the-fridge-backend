@@ -18,12 +18,12 @@ const fileSchema = new mongoose.Schema({
   description: {
     type: String,
     required: true,
-    validates: {
-      validator: function(string) {
-        return string.length <= 200;
-      },
-      message: 'Description cannot be longer than 200 characters.'
-    }
+    // validates: {
+    //   validator: function(string) {
+    //     return string.length <= 200;
+    //   },
+    //   message: 'Description cannot be longer than 200 characters.'
+    // }
   },
   _owner: {
     type: mongoose.Schema.Types.ObjectId,

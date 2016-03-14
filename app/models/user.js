@@ -31,7 +31,7 @@ userSchema.methods.comparePassword = function (password) {
 
   return new Promise((resolve, reject) =>
     bcrypt.compare(password, _this.passwordDigest, (err, data) =>
-        err ? reject(err) : resolve(data))
+        err ? reject(err) : data? resolve(data) : reject(new Error('Not Authorized')))
     ).then(() => _this);
 };
 
