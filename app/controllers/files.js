@@ -8,9 +8,7 @@ const awsS3Upload = require('../../bin/aws-upload');
 const authenticate = require('./concerns/authenticate');
 
 // multer for uploading
-
 const multer = require('multer'); // Antony had require('./concerns/multer.js') but it crashed nodemon
-
 const upload = multer({ storage: multer.memoryStorage() });
 
 const index = (req, res, next) => {
