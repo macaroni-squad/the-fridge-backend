@@ -4,13 +4,8 @@ const controller = require('lib/wiring/controller');
 const models = require('app/models');
 const File = models.file;
 const awsS3Upload = require('../../bin/aws-upload');
-
 const authenticate = require('./concerns/authenticate');
-
-// multer for uploading
-const multer = require('multer'); // Antony had require('./concerns/multer.js') but it crashed nodemon
-
-const upload = multer({ storage: multer.memoryStorage() });
+const multer = require('./concerns/multer.js');
 
 const index = (req, res, next) => {
   File.find()
@@ -81,6 +76,5 @@ module.exports = controller({
   destroy,
 }, { before: [
   { method: authenticate, except: ['index', 'show'] },
-  { method: upload.single('file[file]'), only: ['create'], },
-  // { method: multer.single(), except: ['index', 'show', 'destroy'], }
+  { method: multer.single('file[file]'), except: ['index', 'show', 'destroy'], }
 ], });
