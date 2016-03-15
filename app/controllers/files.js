@@ -3,6 +3,7 @@
 const controller = require('lib/wiring/controller');
 const models = require('app/models');
 const File = models.file;
+const AWS = require('aws-sdk');
 const awsS3Upload = require('../../bin/aws-upload');
 
 const authenticate = require('./concerns/authenticate');
@@ -59,17 +60,27 @@ const update = (req, res, next) => {
 
 // REQUIRE AUTENTICATION
 const destroy = (req, res, next) => {
+  let s3 = new AWS.S3();
   let search = { _id: req.params.id, _owner: req.currentUser._id };
   File.findOne(search)
-    .then(file => {
-      if (!file) {
-        return next();
-      }
-
-      return file.remove()
-        .then(() => res.sendStatus(200));
-    })
-    .catch(err => next(err));
+  .then(file => {
+    if (!file) {
+      return next();
+    }
+    return file.location.split('.com/').pop();
+  }).then((awsKey) =>  ({
+      Bucket: 'bucketimgoinghome',
+      Key: awsKey,
+  })).then((params) =>
+    new Promise((resolve, reject) =>
+      s3.deleteObject(params, (err, data) =>
+        err ? reject(err) : resolve(data)
+      )
+    )
+  )
+  .then(() => File.findOne(search).remove())
+  .then(() => res.sendStatus(200))
+  .catch(err => next(err));
 };
 
 module.exports = controller({
