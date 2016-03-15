@@ -42,7 +42,7 @@ const create = (req, res, next) => {
 // REQUIRE AUTENTICATION
 const update = (req, res, next) => {
   let search = { _id: req.params.id,
-    // _owner: req.currentUser._id
+    _owner: req.currentUser._id
   };
   File.findOne(search)
     .then(file => {
@@ -51,7 +51,9 @@ const update = (req, res, next) => {
       }
 
       delete req.body._owner;  // disallow owner reassignment.
-      return file.update(req.body.file)
+      return file.update({
+        title: req.body.files.title,
+        description: req.body.files.description })
         .then(() => res.sendStatus(200));
     })
     .catch(err => next(err));
@@ -80,6 +82,6 @@ module.exports = controller({
   destroy,
 }, { before: [
   { method: authenticate, except: ['index', 'show'] },
-  { method: upload.single('file[file]'), only: ['create'], },
+  { method: upload.single('file[file]'), only: ['create', 'update'], },
   // { method: multer.single(), except: ['index', 'show', 'destroy'], }
 ], });
