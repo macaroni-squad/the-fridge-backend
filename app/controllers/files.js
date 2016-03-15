@@ -4,8 +4,13 @@ const controller = require('lib/wiring/controller');
 const models = require('app/models');
 const File = models.file;
 const awsS3Upload = require('../../bin/aws-upload');
+
 const authenticate = require('./concerns/authenticate');
-const multer = require('./concerns/multer.js');
+
+// multer for uploading
+const multer = require('multer'); // Antony had require('./concerns/multer.js') but it crashed nodemon
+
+const upload = multer({ storage: multer.memoryStorage() });
 
 const index = (req, res, next) => {
   File.find()
@@ -21,15 +26,14 @@ const show = (req, res, next) => {
 
 // REQUIRE AUTENTICATION
 const create = (req, res, next) => {
-  let file = Object.assign(req.body.file, {
+  let file = Object.assign(req.file, {
     title: req.body.file.title,
     description: req.body.file.description,
     filename: req.file.originalname,
     // appending _owner property to file create
     _owner: req.currentUser._id,
   });
-  console.log(file);
-  awsS3Upload(file.filename, file.title, file.description, file._owner)
+  awsS3Upload(file)
     .then(file => res.json({ file }))
     .catch(err => next(err));
   // return res.json({ body: req.body, file: req.file });
@@ -76,5 +80,6 @@ module.exports = controller({
   destroy,
 }, { before: [
   { method: authenticate, except: ['index', 'show'] },
-  { method: multer.single('file[file]'), except: ['index', 'show', 'destroy'], }
+  { method: upload.single('file[file]'), only: ['create'], },
+  // { method: multer.single(), except: ['index', 'show', 'destroy'], }
 ], });
