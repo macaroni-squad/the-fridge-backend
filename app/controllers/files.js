@@ -13,7 +13,11 @@ const multer = require('multer'); // Antony had require('./concerns/multer.js') 
 const upload = multer({ storage: multer.memoryStorage() });
 
 const index = (req, res, next) => {
-  File.find()
+  console.log(req);
+  let search = {
+    _owner: req.currentUser._id
+  };
+  File.find(search)
     .then(files => res.json({ files }))
     .catch(err => next(err));
 };
@@ -81,7 +85,7 @@ module.exports = controller({
   update,
   destroy,
 }, { before: [
-  { method: authenticate, except: ['index', 'show'] },
+  { method: authenticate },
   { method: upload.single('file[file]'), only: ['create', 'update'], },
   // { method: multer.single(), except: ['index', 'show', 'destroy'], }
 ], });
