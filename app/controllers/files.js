@@ -14,7 +14,6 @@ const multer = require('multer'); // Antony had require('./concerns/multer.js') 
 const upload = multer({ storage: multer.memoryStorage() });
 
 const index = (req, res, next) => {
-  console.log(req);
   let search = {
     _owner: req.currentUser._id
   };
