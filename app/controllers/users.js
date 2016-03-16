@@ -95,7 +95,7 @@ const changepw = (req, res, next) => {
     user ? user.comparePassword(req.body.passwords.old) :
       Promise.reject(new Error('Not found'))
   ).then(user =>
-    user.setPassword(req.body.passwords.old)
+    user.setPassword(req.body.passwords.new)
   ).then((/* user */) =>
     res.sendStatus(200)
   ).catch(err => {
