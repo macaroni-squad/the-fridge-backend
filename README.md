@@ -3,10 +3,10 @@
 This is the back-end API for our file storage web app "The Fridge". The front-end
 repo is here:  [The-Fridge-FrontEnd](https://github.com/macaroni-squad/the-fridge-frontend).
 
-The Fridge is a RESTful API that uses MongoDB and Amazon Web Services (AWS),
-allowing users to upload and store files from their computer. File data and
-location are saved into our database, while the actual file itself is hosted in
-an AWS bucket.
+The Fridge is a RESTful API created using Node.js and Express. MongoDB and Amazon
+Web Services (AWS) are used to store data, allowing users to upload and store files from their
+computer. File data and location are saved into our database, while the actual
+file itself is hosted in an AWS bucket.
 
 MongoDB stores meta-data of the uploaded files which include the following:
 * File title
