@@ -3,13 +3,14 @@
 const controller = require('lib/wiring/controller');
 const models = require('app/models');
 const File = models.file;
+const AWS = require('aws-sdk');
 const awsS3Upload = require('../../bin/aws-upload');
 
 const authenticate = require('./concerns/authenticate');
 
 // multer for uploading
-const multer = require('multer'); // Antony had require('./concerns/multer.js') but it crashed nodemon
 
+const multer = require('multer'); // Antony had require('./concerns/multer.js') but it crashed nodemon
 const upload = multer({ storage: multer.memoryStorage() });
 
 const index = (req, res, next) => {
@@ -38,8 +39,8 @@ const create = (req, res, next) => {
     _owner: req.currentUser._id,
   });
   awsS3Upload(file)
-    .then(file => res.json({ file }))
-    .catch(err => next(err));
+  .then(file => res.json({ file }))
+  .catch(err => next(err));
   // return res.json({ body: req.body, file: req.file });
 };
 
@@ -65,17 +66,35 @@ const update = (req, res, next) => {
 
 // REQUIRE AUTENTICATION
 const destroy = (req, res, next) => {
+  let s3 = new AWS.S3();
+  // find by current user ID and params ID
   let search = { _id: req.params.id, _owner: req.currentUser._id };
   File.findOne(search)
-    .then(file => {
-      if (!file) {
-        return next();
-      }
-
-      return file.remove()
-        .then(() => res.sendStatus(200));
-    })
-    .catch(err => next(err));
+  // if there's no file, skip ahead
+  .then(file => {
+    if (!file) {
+      return next();
+    }
+    // returns everything after '.com/' in the file URL, which
+    // represents the file key on AWS
+    return file.location.split('.com/').pop();
+  // creates a params object
+  }).then((awsKey) =>  ({
+      Bucket: 'bucketimgoinghome',
+      Key: awsKey,
+  // passes params for delete function
+  })).then((params) =>
+    new Promise((resolve, reject) =>
+      s3.deleteObject(params, (err, data) =>
+        err ? reject(err) : resolve(data)
+      )
+    )
+  )
+  // removes the metadata about the file from the database
+  .then(() => File.findOne(search).remove())
+  // server responds with 200
+  .then(() => res.sendStatus(200))
+  .catch(err => next(err));
 };
 
 module.exports = controller({

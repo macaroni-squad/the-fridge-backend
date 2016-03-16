@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# this script works
+
 curl --include --request PATCH http://localhost:3000/files/56e5f4f1d19fd51d166e431a \
   --header "Authorization: Token token=heW0X8I5hhkBas7ziBOalA==" \
   --header "Content-Type: application/json" \
