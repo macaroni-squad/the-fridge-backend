@@ -67,16 +67,22 @@ const update = (req, res, next) => {
 // REQUIRE AUTENTICATION
 const destroy = (req, res, next) => {
   let s3 = new AWS.S3();
+  // find by current user ID and params ID
   let search = { _id: req.params.id, _owner: req.currentUser._id };
   File.findOne(search)
+  // if there's no file, skip ahead
   .then(file => {
     if (!file) {
       return next();
     }
+    // returns everything after '.com/' in the file URL, which
+    // represents the file key on AWS
     return file.location.split('.com/').pop();
+  // creates a params object
   }).then((awsKey) =>  ({
       Bucket: 'bucketimgoinghome',
       Key: awsKey,
+  // passes params for delete function
   })).then((params) =>
     new Promise((resolve, reject) =>
       s3.deleteObject(params, (err, data) =>
@@ -84,7 +90,9 @@ const destroy = (req, res, next) => {
       )
     )
   )
+  // removes the metadata about the file from the database
   .then(() => File.findOne(search).remove())
+  // server responds with 200
   .then(() => res.sendStatus(200))
   .catch(err => next(err));
 };
