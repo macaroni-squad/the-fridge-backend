@@ -13,7 +13,8 @@ let awsS3Upload = function(fileToUpload){
     return File.create({ location: awsS3Response.Location,
         title: fileToUpload.title,
         description: fileToUpload.description,
-        _owner: fileToUpload._owner
+        _owner: fileToUpload._owner,
+        folder: fileToUpload.folder
       });
   }).catch(console.error);
 };

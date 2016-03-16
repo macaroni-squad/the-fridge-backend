@@ -34,6 +34,7 @@ const create = (req, res, next) => {
     title: req.body.file.title,
     description: req.body.file.description,
     filename: req.file.originalname,
+    folder: req.body.file.folder,
     // appending _owner property to file create
     _owner: req.currentUser._id,
   });
@@ -57,7 +58,8 @@ const update = (req, res, next) => {
       delete req.body._owner;  // disallow owner reassignment.
       return file.update({
         title: req.body.files.title,
-        description: req.body.files.description })
+        description: req.body.files.description,
+        folder: req.body.files.folder})
         .then(() => res.sendStatus(200));
     })
     .catch(err => next(err));

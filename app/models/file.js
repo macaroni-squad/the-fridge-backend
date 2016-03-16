@@ -25,6 +25,10 @@ const fileSchema = new mongoose.Schema({
     //   message: 'Description cannot be longer than 200 characters.'
     // }
   },
+  folder: {
+    type: String,
+    required: true
+  },
   _owner: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User'
