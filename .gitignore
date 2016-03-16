@@ -1,5 +1,4 @@
 # Data not to be shared
-.env
 credentials.csv
 
 # Created by https://www.gitignore.io/api/node,osx,linux,windows
@@ -47,7 +46,7 @@ node_modules
 .LSOverride
 
 # Icon must end with two \r
-Icon
+Icon
 
 # Thumbnails
 ._*
@@ -100,4 +99,3 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
-
