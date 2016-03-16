@@ -14,7 +14,11 @@ const multer = require('multer'); // Antony had require('./concerns/multer.js') 
 const upload = multer({ storage: multer.memoryStorage() });
 
 const index = (req, res, next) => {
-  File.find()
+  console.log(req);
+  let search = {
+    _owner: req.currentUser._id
+  };
+  File.find(search)
     .then(files => res.json({ files }))
     .catch(err => next(err));
 };
@@ -43,7 +47,7 @@ const create = (req, res, next) => {
 // REQUIRE AUTENTICATION
 const update = (req, res, next) => {
   let search = { _id: req.params.id,
-    // _owner: req.currentUser._id
+    _owner: req.currentUser._id
   };
   File.findOne(search)
     .then(file => {
@@ -52,7 +56,9 @@ const update = (req, res, next) => {
       }
 
       delete req.body._owner;  // disallow owner reassignment.
-      return file.update(req.body.file)
+      return file.update({
+        title: req.body.files.title,
+        description: req.body.files.description })
         .then(() => res.sendStatus(200));
     })
     .catch(err => next(err));
@@ -90,7 +96,7 @@ module.exports = controller({
   update,
   destroy,
 }, { before: [
-  { method: authenticate, except: ['index', 'show'] },
-  { method: upload.single('file[file]'), only: ['create'], },
+  { method: authenticate },
+  { method: upload.single('file[file]'), only: ['create', 'update'], },
   // { method: multer.single(), except: ['index', 'show', 'destroy'], }
 ], });
