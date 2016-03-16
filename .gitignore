@@ -1,5 +1,6 @@
 # Data not to be shared
 credentials.csv
+.env
 
 # Created by https://www.gitignore.io/api/node,osx,linux,windows
 
