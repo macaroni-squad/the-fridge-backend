@@ -11,11 +11,11 @@ AWS bucket.
 ## NPM Packages
 
 Our API utilizes the following npm modules:
-*[`express`](https://www.npmjs.com/package/express)
-*[`mongoose`](https://www.npmjs.com/package/mongoose)
-*[`multer`](https://www.npmjs.com/package/multer)
-*[`aws-sdk`](https://www.npmjs.com/package/aws-sdk)
-*[`crypto`](https://www.npmjs.com/package/crypto)
+* [`express`](https://www.npmjs.com/package/express)
+* [`mongoose`](https://www.npmjs.com/package/mongoose)
+* [`multer`](https://www.npmjs.com/package/multer)
+* [`aws-sdk`](https://www.npmjs.com/package/aws-sdk)
+* [`crypto`](https://www.npmjs.com/package/crypto)
 
 ## API
 
