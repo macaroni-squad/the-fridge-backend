@@ -35,8 +35,8 @@ const create = (req, res, next) => {
     _owner: req.currentUser._id,
   });
   awsS3Upload(file)
-    .then(file => res.json({ file }))
-    .catch(err => next(err));
+  .then(file => res.json({ file }))
+  .catch(err => next(err));
   // return res.json({ body: req.body, file: req.file });
 };
 
