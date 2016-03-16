@@ -80,7 +80,7 @@ const destroy = (req, res, next) => {
     return file.location.split('.com/').pop();
   // creates a params object
   }).then((awsKey) =>  ({
-      Bucket: 'bucketimgoinghome',
+      Bucket: require('../../bucket-name.js'),
       Key: awsKey,
   // passes params for delete function
   })).then((params) =>
